@@ -96,6 +96,17 @@ app.get('/employees', (req, res) => {
     }
   });
 });
+// retrieve employees by manager
+app.get('/employees/by-manager/:id', (req, res) => {
+  const managerId = req.params.id;
+  viewEmployeesByManager(managerId, res);
+});
+
+app.get('/employees/by-department/:id', (req, res) => {
+  const departmentId = req.params.id;
+  viewEmployeesByManager(departmentId, res);
+});
+
 // retrieve employee by ID
 app.get('/employees/:id', (req, res) => {
     const query = 'SELECT * FROM employee';
@@ -140,6 +151,42 @@ app.put('/employees/:id', (req, res) => {
       res.sendStatus(200);
     }
   });
+});
+
+app.put('/employees/:id/manager', (req, res) => {
+  const employeeId = req.params.id;
+  const newManagerId = req.body.newManagerId; 
+
+  try {
+    // Check if newManagerId is a valid number 
+    if (isNaN(newManagerId)) {
+      throw new Error('Invalid manager ID. Manager ID must be a valid number.');
+    }
+
+    // Call the updateEmployeeManager function to update the employee's manager
+    updateEmployeeManager(employeeId, newManagerId, res);
+  } catch (error) {
+    console.error('Error updating employee manager:', error.message);
+    res.status(400).send(error.message); // Send a 400 Bad Request status with the error message
+  }
+});
+
+// Delete department route
+app.delete('/departments/:id', (req, res) => {
+  const departmentId = req.params.id;
+  deleteDepartment(departmentId, res);
+});
+
+// Delete role route
+app.delete('/roles/:id', (req, res) => {
+  const roleId = req.params.id;
+  deleteRole(roleId, res);
+});
+
+// Delete employee route
+app.delete('/employees/:id', (req, res) => {
+  const employeeId = req.params.id;
+  deleteEmployee(employeeId, res);
 });
 
 // Start the server
