@@ -31,6 +31,7 @@ function displayMainMenu() {
                     'View all departments',
                     'View all roles',
                     'View all employees',
+                    'View employee by ID',
                     'Add a department',
                     'Add a role',
                     'Add an employee',
@@ -134,7 +135,6 @@ const viewAllEmployees = () => {
                 };
             });
             console.table(formattedResults);
-            res.send(formattedResults)
         }
         displayMainMenu();
     });
@@ -188,7 +188,6 @@ const viewEmployeeById = () => {
                       Manager: employee.manager || 'N/A'
                     }];
                     console.table(employeeInfo);
-                    res.send(employeeInfo);
                   }
                 
                 displayMainMenu();
