@@ -31,11 +31,17 @@ function displayMainMenu() {
                     'View all departments',
                     'View all roles',
                     'View all employees',
+                    'View employees by manager',
+                    'View employees by department',
                     'View employee by ID',
                     'Add a department',
+                    'Delete a department',
                     'Add a role',
+                    'Delete a role',
                     'Add an employee',
+                    'Delete an employee',
                     'Update an employee role',
+                    'Update an employee manager',
                     'Exit'
                 ],
             },
@@ -51,21 +57,39 @@ function displayMainMenu() {
                 case 'View all employees':
                     viewAllEmployees();
                     break;
+                case 'View employees by manager':
+                    viewEmployeesByManager();
+                    break;
+                case 'View employees by department':
+                    viewEmployeesByDepartment();
+                    break;
                 case 'View employee by ID':
                     viewEmployeeById();
                     break;
                 case 'Add a department':
                     addDepartment();
                     break;
+                    case 'Delete a department':
+                        deleteDepartment();
+                        break;
                 case 'Add a role':
                     addRole();
+                    break;
+                case 'Delete a role':
+                    deleteRole();
                     break;
                 case 'Add an employee':
                     addEmployee();
                     break;
+                case 'Delete an employee':
+                    deleteEmployee();
+                    break;
                 case 'Update an employee role':
                     updateEmployeeRole();
                     break;
+                    case 'Update an employee manager':
+                        updateEmployeeManager();
+                        break;
                 case 'Exit':
                     console.log('Exiting...');
                     connection.end();
@@ -139,6 +163,128 @@ const viewAllEmployees = () => {
         displayMainMenu();
     });
 };
+
+const viewEmployeesByManager = () => {
+    inquirer
+      .prompt([
+        {
+          type: 'input',
+          name: 'managerId',
+          message: 'Enter the ID of the manager:'
+          
+        },
+      ])
+      .then((answers) => {
+        if (answers.managerId) {
+          const managerId = answers.managerId;
+          const query = `SELECT 
+                            e.id AS employee_id,
+                            e.first_name,
+                            e.last_name,
+                            r.title AS role,
+                            d.department_name AS department,
+                            r.salary
+                        FROM 
+                            employee e
+                        INNER JOIN 
+                            role r ON e.role_id = r.id
+                        INNER JOIN 
+                            department d ON r.department_id = d.id
+                        WHERE 
+                            e.manager_id = ?`;
+  
+          connection.query(query, [managerId], (error, results) => {
+            if (error) {
+              console.error('Error retrieving employees:', error);
+              return;
+            }
+  
+            if (results.length === 0) {
+              console.log('No employees found for this manager.');
+            } else {
+              const formattedResults = results.map((employee) => {
+                return {
+                  Employee_ID: employee.employee_id,
+                  First_Name: employee.first_name,
+                  Last_Name: employee.last_name,
+                  Role: employee.role,
+                  Department: employee.department,
+                  Salary: employee.salary,
+                };
+              });
+              console.table(formattedResults);
+            }
+            displayMainMenu();
+          });
+        } else {
+          displayMainMenu();
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const viewEmployeesByDepartment = () => {
+    inquirer
+      .prompt([
+        {
+          type: 'input',
+          name: 'departmentId',
+          message: 'Enter the ID of the department:'
+          
+        },
+      ])
+      .then((answers) => {
+        if (answers.departmentId) {
+          const departmentId = answers.departmentId;
+          const query = `SELECT 
+                            e.id AS employee_id,
+                            e.first_name,
+                            e.last_name,
+                            r.title AS role,
+                            d.department_name AS department,
+                            r.salary
+                        FROM 
+                            employee e
+                        INNER JOIN 
+                            role r ON e.role_id = r.id
+                        INNER JOIN 
+                            department d ON r.department_id = d.id
+                        WHERE 
+                            e.department_id = ?`;
+  
+          connection.query(query, [departmentId], (error, results) => {
+            if (error) {
+              console.error('Error retrieving employees:', error);
+              return;
+            }
+  
+            if (results.length === 0) {
+              console.log('No employees found for this manager.');
+            } else {
+              const formattedResults = results.map((employee) => {
+                return {
+                  Employee_ID: employee.employee_id,
+                  First_Name: employee.first_name,
+                  Last_Name: employee.last_name,
+                  Role: employee.role,
+                  Department: employee.department,
+                  Salary: employee.salary,
+                };
+              });
+              console.table(formattedResults);
+            }
+            displayMainMenu();
+          });
+        } else {
+          displayMainMenu();
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
 const viewEmployeeById = () => {
     inquirer
@@ -223,6 +369,32 @@ function addDepartment() {
         });
 }
 
+const deleteDepartment = () => {
+    inquirer
+      .prompt([
+        {
+          type: 'input',
+          name: 'departmentId',
+          message: 'Enter the ID of the department to delete:',
+        },
+      ])
+      .then((answers) => {
+        const departmentId = answers.departmentId;
+        const query = 'DELETE FROM department WHERE id = ?';
+        connection.query(query, [departmentId], (error) => {
+          if (error) {
+            console.error('Error deleting department:', error);
+          } else {
+            console.log(`Deleted department with ID ${departmentId}`);
+          }
+          displayMainMenu();
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
 function addRole() {
     inquirer
         .prompt([
@@ -257,6 +429,32 @@ function addRole() {
             console.error(error);
         });
 }
+
+const deleteRole = () => {
+    inquirer
+      .prompt([
+        {
+          type: 'input',
+          name: 'roleId',
+          message: 'Enter the ID of the role to delete:',
+        },
+      ])
+      .then((answers) => {
+        const roleId = answers.roleId;
+        const query = 'DELETE FROM role WHERE id = ?';
+        connection.query(query, [roleId], (error) => {
+          if (error) {
+            console.error('Error deleting role:', error);
+          } else {
+            console.log(`Deleted role with ID ${roleId}`);
+          }
+          displayMainMenu();
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
 function addEmployee() {
     inquirer
@@ -298,6 +496,32 @@ function addEmployee() {
         });
 }
 
+const deleteEmployee = () => {
+    inquirer
+      .prompt([
+        {
+          type: 'input',
+          name: 'employeeId',
+          message: 'Enter the ID of the employee to delete:',
+        },
+      ])
+      .then((answers) => {
+        const employeeId = answers.employeeId;
+        const query = 'DELETE FROM employee WHERE id = ?';
+        connection.query(query, [employeeId], (error) => {
+          if (error) {
+            console.error('Error deleting employee:', error);
+          } else {
+            console.log(`Deleted employee with ID ${employeeId}`);
+          }
+          displayMainMenu();
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
 function updateEmployeeRole() {
     inquirer
         .prompt([
@@ -319,6 +543,36 @@ function updateEmployeeRole() {
                     console.error('Error updating employee role:', error);
                 } else {
                     console.log(`Updated employee role for ID ${answers.employeeId} to ${answers.newRole}`);
+                }
+                displayMainMenu();
+            });
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+};
+
+function updateEmployeeManager() {
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'employeeId',
+                message: 'Enter the ID of the employee to update:',
+            },
+            {
+                type: 'input',
+                name: 'newManager',
+                message: 'Enter the new manager for the employee:',
+            },
+        ])
+        .then((answers) => {
+            const query = 'UPDATE employee SET manager_id = ? WHERE id = ?';
+            connection.query(query, [answers.newManager, answers.employeeId], (error) => {
+                if (error) {
+                    console.error('Error updating employee manager:', error);
+                } else {
+                    console.log(`Updated employee manager for ID ${answers.employeeId} to ${answers.newManager}`);
                 }
                 displayMainMenu();
             });
