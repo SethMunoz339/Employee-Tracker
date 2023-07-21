@@ -23,7 +23,7 @@ In order to run this application you need to install console.table, express, inq
 
 ## Usage
 
-To start the application, run npm start. In the terminal, a menu of choices will appear. select your choice from the menu and follow the prompts to view or change the database.
+The database is connected in both the /public/menu.js file and the server.js file. To start the application, run npm start. In the terminal, a menu of choices will appear. select your choice from the menu and follow the prompts to view or change the database.
 
 ## Contributing
 

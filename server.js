@@ -173,18 +173,6 @@ app.put('/employees/:id/manager', (req, res) => {
   }
 });
 
-// Delete department route
-app.delete('/departments/:id', (req, res) => {
-  const departmentId = req.params.id;
-  deleteDepartment(departmentId, res);
-});
-
-// Delete role route
-app.delete('/roles/:id', (req, res) => {
-  const roleId = req.params.id;
-  deleteRole(roleId, res);
-});
-
 // Delete employee route
 app.delete('/employees/:id', (req, res) => {
   const employeeId = req.params.id;
