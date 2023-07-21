@@ -69,9 +69,9 @@ function displayMainMenu() {
                 case 'Add a department':
                     addDepartment();
                     break;
-                    case 'Delete a department':
-                        deleteDepartment();
-                        break;
+                case 'Delete a department':
+                    deleteDepartment();
+                    break;
                 case 'Add a role':
                     addRole();
                     break;
@@ -87,9 +87,9 @@ function displayMainMenu() {
                 case 'Update an employee role':
                     updateEmployeeRole();
                     break;
-                    case 'Update an employee manager':
-                        updateEmployeeManager();
-                        break;
+                case 'Update an employee manager':
+                    updateEmployeeManager();
+                    break;
                 case 'Exit':
                     console.log('Exiting...');
                     connection.end();
@@ -166,18 +166,18 @@ const viewAllEmployees = () => {
 
 const viewEmployeesByManager = () => {
     inquirer
-      .prompt([
-        {
-          type: 'input',
-          name: 'managerId',
-          message: 'Enter the ID of the manager:'
-          
-        },
-      ])
-      .then((answers) => {
-        if (answers.managerId) {
-          const managerId = answers.managerId;
-          const query = `SELECT 
+        .prompt([
+            {
+                type: 'input',
+                name: 'managerId',
+                message: 'Enter the ID of the manager:'
+
+            },
+        ])
+        .then((answers) => {
+            if (answers.managerId) {
+                const managerId = answers.managerId;
+                const query = `SELECT 
                             e.id AS employee_id,
                             e.first_name,
                             e.last_name,
@@ -192,53 +192,53 @@ const viewEmployeesByManager = () => {
                             department d ON r.department_id = d.id
                         WHERE 
                             e.manager_id = ?`;
-  
-          connection.query(query, [managerId], (error, results) => {
-            if (error) {
-              console.error('Error retrieving employees:', error);
-              return;
-            }
-  
-            if (results.length === 0) {
-              console.log('No employees found for this manager.');
-            } else {
-              const formattedResults = results.map((employee) => {
-                return {
-                  Employee_ID: employee.employee_id,
-                  First_Name: employee.first_name,
-                  Last_Name: employee.last_name,
-                  Role: employee.role,
-                  Department: employee.department,
-                  Salary: employee.salary,
-                };
-              });
-              console.table(formattedResults);
-            }
-            displayMainMenu();
-          });
-        } else {
-          displayMainMenu();
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
 
-  const viewEmployeesByDepartment = () => {
+                connection.query(query, [managerId], (error, results) => {
+                    if (error) {
+                        console.error('Error retrieving employees:', error);
+                        return;
+                    }
+
+                    if (results.length === 0) {
+                        console.log('No employees found for this manager.');
+                    } else {
+                        const formattedResults = results.map((employee) => {
+                            return {
+                                Employee_ID: employee.employee_id,
+                                First_Name: employee.first_name,
+                                Last_Name: employee.last_name,
+                                Role: employee.role,
+                                Department: employee.department,
+                                Salary: employee.salary,
+                            };
+                        });
+                        console.table(formattedResults);
+                    }
+                    displayMainMenu();
+                });
+            } else {
+                displayMainMenu();
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+};
+
+const viewEmployeesByDepartment = () => {
     inquirer
-      .prompt([
-        {
-          type: 'input',
-          name: 'departmentId',
-          message: 'Enter the ID of the department:'
-          
-        },
-      ])
-      .then((answers) => {
-        if (answers.departmentId) {
-          const departmentId = answers.departmentId;
-          const query = `SELECT 
+        .prompt([
+            {
+                type: 'input',
+                name: 'departmentId',
+                message: 'Enter the ID of the department:'
+
+            },
+        ])
+        .then((answers) => {
+            if (answers.departmentId) {
+                const departmentId = answers.departmentId;
+                const query = `SELECT 
                             e.id AS employee_id,
                             e.first_name,
                             e.last_name,
@@ -253,38 +253,38 @@ const viewEmployeesByManager = () => {
                             department d ON r.department_id = d.id
                         WHERE 
                             e.department_id = ?`;
-  
-          connection.query(query, [departmentId], (error, results) => {
-            if (error) {
-              console.error('Error retrieving employees:', error);
-              return;
-            }
-  
-            if (results.length === 0) {
-              console.log('No employees found for this manager.');
+
+                connection.query(query, [departmentId], (error, results) => {
+                    if (error) {
+                        console.error('Error retrieving employees:', error);
+                        return;
+                    }
+
+                    if (results.length === 0) {
+                        console.log('No employees found for this manager.');
+                    } else {
+                        const formattedResults = results.map((employee) => {
+                            return {
+                                Employee_ID: employee.employee_id,
+                                First_Name: employee.first_name,
+                                Last_Name: employee.last_name,
+                                Role: employee.role,
+                                Department: employee.department,
+                                Salary: employee.salary,
+                            };
+                        });
+                        console.table(formattedResults);
+                    }
+                    displayMainMenu();
+                });
             } else {
-              const formattedResults = results.map((employee) => {
-                return {
-                  Employee_ID: employee.employee_id,
-                  First_Name: employee.first_name,
-                  Last_Name: employee.last_name,
-                  Role: employee.role,
-                  Department: employee.department,
-                  Salary: employee.salary,
-                };
-              });
-              console.table(formattedResults);
+                displayMainMenu();
             }
-            displayMainMenu();
-          });
-        } else {
-          displayMainMenu();
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+};
 
 const viewEmployeeById = () => {
     inquirer
@@ -325,17 +325,17 @@ const viewEmployeeById = () => {
                 } else {
                     const employee = results[0];
                     const employeeInfo = [{
-                      Employee_ID: employee.employee_id,
-                      First_Name: employee.first_name,
-                      Last_Name: employee.last_name,
-                      Role: employee.role,
-                      Department: employee.department,
-                      Salary: employee.salary,
-                      Manager: employee.manager || 'N/A'
+                        Employee_ID: employee.employee_id,
+                        First_Name: employee.first_name,
+                        Last_Name: employee.last_name,
+                        Role: employee.role,
+                        Department: employee.department,
+                        Salary: employee.salary,
+                        Manager: employee.manager || 'N/A'
                     }];
                     console.table(employeeInfo);
-                  }
-                
+                }
+
                 displayMainMenu();
             });
         })
@@ -371,29 +371,29 @@ function addDepartment() {
 
 const deleteDepartment = () => {
     inquirer
-      .prompt([
-        {
-          type: 'input',
-          name: 'departmentId',
-          message: 'Enter the ID of the department to delete:',
-        },
-      ])
-      .then((answers) => {
-        const departmentId = answers.departmentId;
-        const query = 'DELETE FROM department WHERE id = ?';
-        connection.query(query, [departmentId], (error) => {
-          if (error) {
-            console.error('Error deleting department:', error);
-          } else {
-            console.log(`Deleted department with ID ${departmentId}`);
-          }
-          displayMainMenu();
+        .prompt([
+            {
+                type: 'input',
+                name: 'departmentId',
+                message: 'Enter the ID of the department to delete:',
+            },
+        ])
+        .then((answers) => {
+            const departmentId = answers.departmentId;
+            const query = 'DELETE FROM department WHERE id = ?';
+            connection.query(query, [departmentId], (error) => {
+                if (error) {
+                    console.error('Error deleting department:', error);
+                } else {
+                    console.log(`Deleted department with ID ${departmentId}`);
+                }
+                displayMainMenu();
+            });
+        })
+        .catch((error) => {
+            console.error(error);
         });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+};
 
 function addRole() {
     inquirer
@@ -432,29 +432,29 @@ function addRole() {
 
 const deleteRole = () => {
     inquirer
-      .prompt([
-        {
-          type: 'input',
-          name: 'roleId',
-          message: 'Enter the ID of the role to delete:',
-        },
-      ])
-      .then((answers) => {
-        const roleId = answers.roleId;
-        const query = 'DELETE FROM role WHERE id = ?';
-        connection.query(query, [roleId], (error) => {
-          if (error) {
-            console.error('Error deleting role:', error);
-          } else {
-            console.log(`Deleted role with ID ${roleId}`);
-          }
-          displayMainMenu();
+        .prompt([
+            {
+                type: 'input',
+                name: 'roleId',
+                message: 'Enter the ID of the role to delete:',
+            },
+        ])
+        .then((answers) => {
+            const roleId = answers.roleId;
+            const query = 'DELETE FROM role WHERE id = ?';
+            connection.query(query, [roleId], (error) => {
+                if (error) {
+                    console.error('Error deleting role:', error);
+                } else {
+                    console.log(`Deleted role with ID ${roleId}`);
+                }
+                displayMainMenu();
+            });
+        })
+        .catch((error) => {
+            console.error(error);
         });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+};
 
 function addEmployee() {
     inquirer
@@ -498,29 +498,29 @@ function addEmployee() {
 
 const deleteEmployee = () => {
     inquirer
-      .prompt([
-        {
-          type: 'input',
-          name: 'employeeId',
-          message: 'Enter the ID of the employee to delete:',
-        },
-      ])
-      .then((answers) => {
-        const employeeId = answers.employeeId;
-        const query = 'DELETE FROM employee WHERE id = ?';
-        connection.query(query, [employeeId], (error) => {
-          if (error) {
-            console.error('Error deleting employee:', error);
-          } else {
-            console.log(`Deleted employee with ID ${employeeId}`);
-          }
-          displayMainMenu();
+        .prompt([
+            {
+                type: 'input',
+                name: 'employeeId',
+                message: 'Enter the ID of the employee to delete:',
+            },
+        ])
+        .then((answers) => {
+            const employeeId = answers.employeeId;
+            const query = 'DELETE FROM employee WHERE id = ?';
+            connection.query(query, [employeeId], (error) => {
+                if (error) {
+                    console.error('Error deleting employee:', error);
+                } else {
+                    console.log(`Deleted employee with ID ${employeeId}`);
+                }
+                displayMainMenu();
+            });
+        })
+        .catch((error) => {
+            console.error(error);
         });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+};
 
 function updateEmployeeRole() {
     inquirer
