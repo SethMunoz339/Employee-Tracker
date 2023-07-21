@@ -96,15 +96,17 @@ app.get('/employees', (req, res) => {
     }
   });
 });
+
 // retrieve employees by manager
 app.get('/employees/by-manager/:id', (req, res) => {
   const managerId = req.params.id;
   viewEmployeesByManager(managerId, res);
 });
 
+// retrieve employees by department
 app.get('/employees/by-department/:id', (req, res) => {
   const departmentId = req.params.id;
-  viewEmployeesByManager(departmentId, res);
+  viewEmployeesByDepartment(departmentId, res);
 });
 
 // retrieve employee by ID

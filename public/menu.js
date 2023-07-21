@@ -261,7 +261,7 @@ const viewEmployeesByDepartment = () => {
                     }
 
                     if (results.length === 0) {
-                        console.log('No employees found for this manager.');
+                        console.log('No employees found for this department.');
                     } else {
                         const formattedResults = results.map((employee) => {
                             return {
