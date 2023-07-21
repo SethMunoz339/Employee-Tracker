@@ -35,9 +35,7 @@ function displayMainMenu() {
                     'View employees by department',
                     'View employee by ID',
                     'Add a department',
-                    'Delete a department',
                     'Add a role',
-                    'Delete a role',
                     'Add an employee',
                     'Delete an employee',
                     'Update an employee role',
@@ -69,14 +67,8 @@ function displayMainMenu() {
                 case 'Add a department':
                     addDepartment();
                     break;
-                case 'Delete a department':
-                    deleteDepartment();
-                    break;
                 case 'Add a role':
                     addRole();
-                    break;
-                case 'Delete a role':
-                    deleteRole();
                     break;
                 case 'Add an employee':
                     addEmployee();
@@ -368,32 +360,7 @@ function addDepartment() {
             console.error(error);
         });
 }
-// function for deleting a department
-const deleteDepartment = () => {
-    inquirer
-        .prompt([
-            {
-                type: 'input',
-                name: 'departmentId',
-                message: 'Enter the ID of the department to delete:',
-            },
-        ])
-        .then((answers) => {
-            const departmentId = answers.departmentId;
-            const query = 'DELETE FROM department WHERE id = ?';
-            connection.query(query, [departmentId], (error) => {
-                if (error) {
-                    console.error('Error deleting department:', error);
-                } else {
-                    console.log(`Deleted department with ID ${departmentId}`);
-                }
-                displayMainMenu();
-            });
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-};
+
 // function for creating a new role
 function addRole() {
     inquirer
@@ -429,33 +396,6 @@ function addRole() {
             console.error(error);
         });
 }
-
-// function for deleting a role
-const deleteRole = () => {
-    inquirer
-        .prompt([
-            {
-                type: 'input',
-                name: 'roleId',
-                message: 'Enter the ID of the role to delete:',
-            },
-        ])
-        .then((answers) => {
-            const roleId = answers.roleId;
-            const query = 'DELETE FROM role WHERE id = ?';
-            connection.query(query, [roleId], (error) => {
-                if (error) {
-                    console.error('Error deleting role:', error);
-                } else {
-                    console.log(`Deleted role with ID ${roleId}`);
-                }
-                displayMainMenu();
-            });
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-};
 
 // function for creating a new employee
 function addEmployee() {
