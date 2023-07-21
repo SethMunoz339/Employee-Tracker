@@ -18,7 +18,7 @@ connection.connect((err) => {
     console.log('Connected to the database.');
     displayMainMenu();
 });
-
+// Displays the menu in the terminal
 function displayMainMenu() {
     console.log('=== Employee Management System ===');
     inquirer
@@ -100,7 +100,7 @@ function displayMainMenu() {
             console.error(error);
         });
 }
-
+// Function for viewing departments
 function viewAllDepartments() {
     const query = 'SELECT * FROM department';
     connection.query(query, (error, results) => {
@@ -112,7 +112,7 @@ function viewAllDepartments() {
         displayMainMenu();
     });
 }
-
+// Function for viewing roles
 function viewAllRoles() {
     const query = 'SELECT * FROM role';
     connection.query(query, (error, results) => {
@@ -124,7 +124,7 @@ function viewAllRoles() {
         displayMainMenu();
     });
 }
-
+// Function for viewing all employees
 const viewAllEmployees = () => {
     const query = `SELECT 
                       e.id AS employee_id,
@@ -163,7 +163,7 @@ const viewAllEmployees = () => {
         displayMainMenu();
     });
 };
-
+// Function for viewing employees by manager
 const viewEmployeesByManager = () => {
     inquirer
         .prompt([
@@ -224,7 +224,7 @@ const viewEmployeesByManager = () => {
             console.error(error);
         });
 };
-
+// Function for viewing employees by department
 const viewEmployeesByDepartment = () => {
     inquirer
         .prompt([
@@ -285,7 +285,7 @@ const viewEmployeesByDepartment = () => {
             console.error(error);
         });
 };
-
+// Function for viewing employees by employee ID
 const viewEmployeeById = () => {
     inquirer
         .prompt([
@@ -343,7 +343,7 @@ const viewEmployeeById = () => {
             console.error(error);
         });
 };
-
+// function for creating a new department
 function addDepartment() {
     inquirer
         .prompt([
@@ -368,7 +368,7 @@ function addDepartment() {
             console.error(error);
         });
 }
-
+// function for deleting a department
 const deleteDepartment = () => {
     inquirer
         .prompt([
@@ -394,7 +394,7 @@ const deleteDepartment = () => {
             console.error(error);
         });
 };
-
+// function for creating a new role
 function addRole() {
     inquirer
         .prompt([
@@ -430,6 +430,7 @@ function addRole() {
         });
 }
 
+// function for deleting a role
 const deleteRole = () => {
     inquirer
         .prompt([
@@ -456,6 +457,7 @@ const deleteRole = () => {
         });
 };
 
+// function for creating a new employee
 function addEmployee() {
     inquirer
         .prompt([
@@ -496,6 +498,7 @@ function addEmployee() {
         });
 }
 
+// function for deleting an employee
 const deleteEmployee = () => {
     inquirer
         .prompt([
@@ -522,6 +525,7 @@ const deleteEmployee = () => {
         });
 };
 
+// function for updating an employee role
 function updateEmployeeRole() {
     inquirer
         .prompt([
@@ -552,6 +556,7 @@ function updateEmployeeRole() {
         });
 };
 
+// function for updating an employee manager
 function updateEmployeeManager() {
     inquirer
         .prompt([
