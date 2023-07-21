@@ -8,6 +8,10 @@
 
 This application allows a business to create a database of employees that includes their roles, departments,slaries, and managers. It can be updated with new roles, departments, and empolyees.
 
+## Video Link
+
+https://drive.google.com/file/d/1L8gX4QpWorOWBQgmIXQHqJAkeNW3sMDe/view?usp=sharing
+
 ## Table of Contents
 
 - [Installation](#installation)
